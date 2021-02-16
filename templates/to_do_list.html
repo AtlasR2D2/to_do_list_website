@@ -1,0 +1,91 @@
+{% extends 'bootstrap/base.html' %}
+
+<script>
+   function checkComplete(id_x){
+    window.location.href = {{url_for('update',id=id_x)}};
+}
+</script>
+
+{% block styles %}
+{{ super() }}
+<link rel="stylesheet" href="{{url_for('static',filename='css/styles.css')}}">
+{% endblock %}
+
+{% block title %}To-Do List{% endblock %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-12">
+
+      <h1>Outstanding Items</h1>
+
+	  <table class="table">
+          <thead>
+              <tr>
+                  {% for header in headers: %}
+                    {% if header != "completed_flag": %}
+                        <th scope="col">{{header}}</th>
+                    {% else: %}
+                        <th scope="col">Completed</th>
+                    {% endif %}
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+            {% for item_x in outstanding_data: %}
+                <tr>
+                    {% for header in headers: %}
+                        {% if header == "completed_flag": %}
+                            <td><input type="checkbox" id="completed_checkbox" onclick="window.location.href='{{url_for('update',id=item_x.id)}}'"></td>
+                        {% else: %}
+                            <td>{{item_x[header]}}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+          </tbody>
+  	  </table>
+
+        <a href="{{url_for('add')}}">Add new item</a>
+
+      <h1>Completed Items</h1>
+
+	  <table class="table">
+          <thead>
+              <tr>
+                  {% for header in headers: %}
+                    {% if header != "completed_flag": %}
+                        <th scope="col">{{header}}</th>
+                    {% else: %}
+                        <th scope="col">Completed</th>
+                    {% endif %}
+                  {% endfor %}
+              </tr>
+          </thead>
+          <tbody>
+            {% for item_x in completed_data: %}
+                <tr>
+                    {% for header in headers: %}
+                        {% if header == "completed_flag": %}
+                            <td><input type="checkbox" id="completed_checkbox" checked onclick="window.location.href='{{url_for('update',id=item_x.id)}}'"></td>
+                        {% else: %}
+                            <td>{{item_x[header]}}</td>
+                        {% endif %}
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+          </tbody>
+  	  </table>
+
+      <p><a href="{{url_for('home')}}">Return to index page</a></p>
+
+
+    </div>
+  </div>
+</div>
+
+
+
+{% endblock %}
